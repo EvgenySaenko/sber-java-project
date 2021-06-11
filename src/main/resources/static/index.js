@@ -5,17 +5,9 @@
 //http - модуль http для отправки запросов из фронта(https://docs.angularjs.org/api/ng/service/$http#general-usage)
 angular.module('app',[]).controller('indexController', function ($scope, $http){
     const contextPath = 'http://localhost:8189/shop';
-//
-//    $scope.fillTable = function () {
-//        $http.get(contextPath + '/api/v1/products')
-//            .then(function (response) {
-//            //console.log(response)
-//                $scope.ProductList = response.data;//вытащим JSON array
-//            });
-//    };
 
     //отображение таблицы товаров
-    $scope.fillTable = function (pageIndex) {
+    $scope.fillTable = function (pageIndex = 1) {
         $http({
             url: contextPath + '/api/v1/products',
             method: 'GET',
@@ -23,33 +15,52 @@ angular.module('app',[]).controller('indexController', function ($scope, $http){
                 title: $scope.filter ? $scope.filter.title : null,
                 min_price: $scope.filter ? $scope.filter.min_price : null,
                 max_price: $scope.filter ? $scope.filter.max_price : null,
+                p: pageIndex
             }
         }).then(function (response) {
-            $scope.ProductsPage = response.data;//сохраним страницу
+            $scope.ProductsPage = response.data;
+            console.log($scope.ProductsPage)
+
+            let minPageIndex = pageIndex - 2;
+            if (minPageIndex < 1) {
+                minPageIndex = 1;
+            }
+
+            let maxPageIndex = pageIndex + 2;
+            if (maxPageIndex > $scope.ProductsPage.totalPages) {
+                maxPageIndex = $scope.ProductsPage.totalPages;
+            }
             //PaginationArray - индексы страниц сгенериные по странице
-            $scope.PaginationArray = $scope.generatePagesIndexes(1, $scope.ProductsPage.totalPages);
+            $scope.PaginationArray = $scope.generatePagesIndexes(minPageIndex, maxPageIndex);
         });
     };
 
+    $scope.showCart = function () {
+        $http.get(contextPath + '/api/v1/cart')
+            .then(function (response) {
+                $scope.Cart = response.data;
+            });
+    };
+
     //создает лист список страниц например с 5 по 15
-    $scope.generatePagesIndexes = function (startPage, endPage) {
-        let arr = [];//
-        for(let i = startPage; i < endPage + 1; i++){
+    $scope.generatePagesIndexes = function(startPage, endPage) {
+        let arr = [];
+        for (let i = startPage; i < endPage + 1; i++) {
             arr.push(i);
         }
         return arr;
     }
 
     //создание продукта
-    $scope.submitCreateNewProduct =  function () {
-        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
+    $scope.submitCreateNewProduct = function () {
+        $http.post(contextPath + '/products', $scope.newProduct)
             .then(function (response) {
 //                console.log('sended: ');
 //                console.log($scope.newProduct);
 //                console.log('received: ');
 //                console.log(response.data);
-                $scope.fillTable();
                 $scope.newProduct = null;
+                $scope.fillTable();
             });
     };
 
@@ -59,11 +70,30 @@ angular.module('app',[]).controller('indexController', function ($scope, $http){
             .then(function (response) {//когда сервак ответил все ок
                 $scope.fillTable();//перезаполняем таблицу
             });
-    };
+    }
+
+    //добавление продукта в корзину по id
+    $scope.addToCart = function (productId) {
+        $http.get(contextPath + '/api/v1/cart/add/' + productId)
+            .then(function (response) {//когда сервак ответил все ок
+                $scope.showCart();
+                console.log('added');
+            });
+    }
+
+    //очистка корзины
+    $scope.clearCart = function () {
+        $http.get(contextPath + '/api/v1/cart/clear')
+            .then(function (response) {//когда сервак ответил все ок
+                $scope.showCart();
+            });
+    }
 
 
 
 
 
     $scope.fillTable();
+    $scope.showCart();
+
 });

@@ -1,4 +1,4 @@
-package com.evgenys.online.shop.utils;
+package com.evgenys.online.shop.utils.converter;
 
 import com.evgenys.online.shop.dto.ProductDto;
 import com.evgenys.online.shop.persistence.entities.Product;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class Converter {
+public class ProductConverter {
 
     public Product convertToProduct(ProductDto productDto){
         return Product.builder()
