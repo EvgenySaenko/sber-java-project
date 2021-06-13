@@ -16,109 +16,127 @@
     <div class="container" ng-controller="indexController">
         <h1>Online-Shop</h1>
 
-        <h3>Фильтр</h3>
-        <form novalidate ng-submit="fillTable()">
-            <div class="form-group row">
-                <div class="form-group col-md-3">
-                    <label for="filterTitle">Название товара</label>
-                    <input class="form-control" type="text" ng-model="filter.title" id="filterTitle">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="filterMinPrice">Минимальная цена</label>
-                    <input class="form-control" type="number" ng-model="filter.min_price" id="filterMinPrice">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="filterMaxPrice">Максимальная цена</label>
-                    <input class="form-control" type="number" ng-model="filter.max_price" id="filterMaxPrice">
-                </div>
-            </div>
-            <div class="form-group row">
-                <button class="btn btn-success" type="submit">Применить</button>
-            </div>
-        </form>
+<!--        формируется JSON и шлем на бэкенд-->
+        <div class="mb-3 text-center" ng-show="!authorized">
+<!--            перехватываем ангуляром нажатие кнопки submit ->> сработает tryToAuth-->
+            <form class="form-signin" ng-submit="tryToAuth()" style="max-width: 350px; padding: 15px; margin: 0 auto;">
+                <h1 class="h3 mb-3 font-weight-normal">Пожалуйста войдите</h1>
+                <label for="inputUsername" class="sr-only">Имя пользователя</label>
+                <input type="text" ng-model="user.username" id="inputUsername" class="form-control" placeholder="Имя пользователя" style="margin-bottom: 10px;" required="">
+                <label for="inputPassword" class="sr-only">Пароль</label>
+                <input type="password" ng-model="user.password" id="inputPassword" class="form-control" placeholder="Пароль" style="margin-bottom: 10px;" required="">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+                <p class="mt-5 mb-3 text-muted">© Online Shop 2021</p>
+            </form>
 
-        <h3>Список товаров</h3>
-        <table class="table table-hover" cellpadding="0" cellspacing="0">
-            <thead>
+            <div ng-if="isUserLoggedIn()">
+                <button class="btn btn-outline-secondary" ng-click="tryToLogout()">Выйти</button>
+            </div>
+        </div>
+
+        <div ng-show="authorized">
+            <h3>Фильтр</h3>
+            <form novalidate ng-submit="fillTable()">
+                <div class="form-group row">
+                    <div class="form-group col-md-3">
+                        <label for="filterTitle">Название товара</label>
+                        <input class="form-control" type="text" ng-model="filter.title" id="filterTitle">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="filterMinPrice">Минимальная цена</label>
+                        <input class="form-control" type="number" ng-model="filter.min_price" id="filterMinPrice">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="filterMaxPrice">Максимальная цена</label>
+                        <input class="form-control" type="number" ng-model="filter.max_price" id="filterMaxPrice">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <button class="btn btn-success" type="submit">Применить</button>
+                </div>
+            </form>
+
+            <h3>Список товаров</h3>
+            <table class="table table-hover" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td>Название</td>
+                        <td>Цена</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+    <!--                аналог цикла форыч-->
+    <!--                чтобы получить List нужно из Page достать контент-->
+                    <tr ng-repeat="p in ProductsPage.content">
+                        <td>{{p.title}}</td>
+                        <td>{{p.price}}</td>
+                        <td>
+                            <button class="btn btn-primary" ng-click="addToCart(p.id)">Добавить в корзину</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Удалить товар</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li ng-class="ProductsPage.first ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link" ng-click="fillTable(ProductsPage.number)">Пред.</a>
+                    </li>
+
+                    <li ng-class="ProductsPage.number == pageIndex - 1 ? 'page-item active' : 'page-item'" ng-repeat="pageIndex in PaginationArray">
+                        <a class="page-link" ng-click="fillTable(pageIndex)">{{pageIndex}}</a>
+                    </li>
+
+                    <li ng-class="ProductsPage.last ? 'page-item disabled' : 'page-item'">
+                        <a class="page-link" ng-click="fillTable(ProductsPage.number + 2)">След.</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <h3>Корзина</h3>
+            <table class="table table-hover" cellpadding="0" cellspacing="0">
+                <thead>
                 <tr>
                     <td>Название</td>
+                    <td>Количество</td>
                     <td>Цена</td>
-                    <td></td>
-                    <td></td>
                 </tr>
-            </thead>
-            <tbody>
-<!--                аналог цикла форыч-->
-<!--                чтобы получить List нужно из Page достать контент-->
-                <tr ng-repeat="p in ProductsPage.content">
-                    <td>{{p.title}}</td>
-                    <td>{{p.price}}</td>
-                    <td>
-                        <button class="btn btn-primary" ng-click="addToCart(p.id)">Добавить в корзину</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Удалить товар</button>
-                    </td>
+                </thead>
+                <tbody>
+                <tr ng-repeat="oi in Cart.items">
+                    <td>{{oi.productTitle}}</td>
+                    <td>{{oi.quantity}}</td>
+                    <td>{{oi.price}}</td>
                 </tr>
+                <tr>
+                    <td>Итого</td>
+                    <td></td>
+                    <td>{{Cart.totalPrice}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
 
-            </tbody>
-        </table>
-
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li ng-class="ProductsPage.first ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" ng-click="fillTable(ProductsPage.number)">Пред.</a>
-                </li>
-
-                <li ng-class="ProductsPage.number == pageIndex - 1 ? 'page-item active' : 'page-item'" ng-repeat="pageIndex in PaginationArray">
-                    <a class="page-link" ng-click="fillTable(pageIndex)">{{pageIndex}}</a>
-                </li>
-
-                <li ng-class="ProductsPage.last ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" ng-click="fillTable(ProductsPage.number + 2)">След.</a>
-                </li>
-            </ul>
-        </nav>
-
-        <h3>Корзина</h3>
-        <table class="table table-hover" cellpadding="0" cellspacing="0">
-            <thead>
-            <tr>
-                <td>Название</td>
-                <td>Количество</td>
-                <td>Цена</td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="oi in Cart.items">
-                <td>{{oi.productTitle}}</td>
-                <td>{{oi.quantity}}</td>
-                <td>{{oi.price}}</td>
-            </tr>
-            <tr>
-                <td>Итого</td>
-                <td></td>
-                <td>{{Cart.totalPrice}}</td>
-            </tr>
-            </tbody>
-        </table>
-        <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
-
-        <h3>Добавить товар</h3>
-        <form novalidate ng-submit="submitCreateNewProduct()">
-                    <div class="form-group col-md-6">
-                        <label for="newProductTitle">Название</label>
-                        <input class="form-control" type="text" ng-model="newProduct.title" id="newProductTitle">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="newProductPrice">Цена</label>
-                        <input class="form-control" type="text" ng-model="newProduct.price" id="newProductPrice">
-                    </div>
-                    <div>
-                        <button class="btn btn-success" type="submit">Сохранить</button>
-                    </div>
-        </form>
-
+            <h3>Добавить товар</h3>
+            <form novalidate ng-submit="submitCreateNewProduct()">
+                        <div class="form-group col-md-6">
+                            <label for="newProductTitle">Название</label>
+                            <input class="form-control" type="text" ng-model="newProduct.title" id="newProductTitle">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="newProductPrice">Цена</label>
+                            <input class="form-control" type="text" ng-model="newProduct.price" id="newProductPrice">
+                        </div>
+                        <div>
+                            <button class="btn btn-success" type="submit">Сохранить</button>
+                        </div>
+            </form>
+        </div>
     </div>
-
 </body>

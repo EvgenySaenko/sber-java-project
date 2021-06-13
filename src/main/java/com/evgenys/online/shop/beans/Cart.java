@@ -6,7 +6,10 @@ import com.evgenys.online.shop.persistence.entities.Product;
 import com.evgenys.online.shop.services.ProductService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
@@ -15,6 +18,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Data
 public class Cart {
     private List<OrderItem> items;

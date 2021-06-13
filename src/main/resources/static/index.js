@@ -5,6 +5,7 @@
 //http - модуль http для отправки запросов из фронта(https://docs.angularjs.org/api/ng/service/$http#general-usage)
 angular.module('app',[]).controller('indexController', function ($scope, $http){
     const contextPath = 'http://localhost:8189/shop';
+    $scope.authorized = false;
 
     //отображение таблицы товаров
     $scope.fillTable = function (pageIndex = 1) {
@@ -53,7 +54,7 @@ angular.module('app',[]).controller('indexController', function ($scope, $http){
 
     //создание продукта
     $scope.submitCreateNewProduct = function () {
-        $http.post(contextPath + '/products', $scope.newProduct)
+        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
             .then(function (response) {
 //                console.log('sended: ');
 //                console.log($scope.newProduct);
@@ -89,11 +90,30 @@ angular.module('app',[]).controller('indexController', function ($scope, $http){
             });
     }
 
+    //авторизация
+    $scope.tryToAuth = function () {
+        $http.post(contextPath + '/auth', $scope.user)//в тело пост запроса зашиваем json user
+            .then(function successCallback(response) {
+                if (response.data.token) {//если в ответе есть json с токеном
+                    //ко всем запросам подшиваем в стандартный хэдер common.Authorization и туда подшиваем токен
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $scope.user.username = null;
+                    $scope.user.password = null;
+                    $scope.authorized = true;
+                    $scope.fillTable();
+                }
+            }, function errorCallback(response) {
+                //window.alert(response.data.message);
+                window.alert("authentication error");
+                $scope.clearUser();
+            });
+    };
 
 
 
 
-    $scope.fillTable();
-    $scope.showCart();
+
+    // $scope.fillTable();
+    // $scope.showCart();
 
 });
