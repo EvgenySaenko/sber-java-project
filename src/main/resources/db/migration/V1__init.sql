@@ -81,12 +81,33 @@ values
 ('Mango',320.0);
 
 
+
+drop table if exists orders cascade;
+create table orders (
+     id                         bigserial primary key,
+     user_id                    bigint not null,
+     price                      numeric(8, 2) not null,
+     address                    varchar (255) not null,
+     email                      varchar(30) not null,
+     created_at                 timestamp default current_timestamp,
+     updated_at                 timestamp default current_timestamp,
+     constraint fk_user_id foreign key (user_id) references users (id)
+);
+
+
 drop table if exists order_items cascade;
 create table order_items (
-     id                        bigserial,
+     id                        bigserial primary key,
+     order_id                  bigint not null,
      product_id                bigint not null,
      quantity                  int,
-     price_per_item            numeric(8, 2),
+     price_per_product         numeric(8, 2),
      price                     numeric(8, 2),
-     primary key(id), constraint fk_prod_id foreign key (product_id) references products (id)
+     created_at                timestamp default current_timestamp,
+     updated_at                timestamp default current_timestamp,
+     constraint fk_prod_id foreign key (product_id) references products (id),
+     constraint fk_order_id foreign key (order_id) references orders (id)
 );
+
+
+

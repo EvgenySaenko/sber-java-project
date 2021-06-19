@@ -1,119 +1,119 @@
+(function ($localStorage) {
+    'use strict';
 
-//создаем приложение имя app, [тут dependency] указываем контроллер и функцию реализующую его
-//scope - как глобальный контекст для JS и для html,
-// если мы что-то создали например в html => то в js файле можем это у scope достать(и наоборот)
-//http - модуль http для отправки запросов из фронта(https://docs.angularjs.org/api/ng/service/$http#general-usage)
-angular.module('app',[]).controller('indexController', function ($scope, $http){
-    const contextPath = 'http://localhost:8189/shop';
-    $scope.authorized = false;
+    angular
+        .module('app', ['ngRoute', 'ngStorage'])
+        .config(config)//функции для конфигурирования и запуска
+        .run(run);
 
-    //отображение таблицы товаров
-    $scope.fillTable = function (pageIndex = 1) {
-        $http({
-            url: contextPath + '/api/v1/products',
-            method: 'GET',
-            params: {
-                title: $scope.filter ? $scope.filter.title : null,
-                min_price: $scope.filter ? $scope.filter.min_price : null,
-                max_price: $scope.filter ? $scope.filter.max_price : null,
-                p: pageIndex
-            }
-        }).then(function (response) {
-            $scope.ProductsPage = response.data;
-            console.log($scope.ProductsPage)
-
-            let minPageIndex = pageIndex - 2;
-            if (minPageIndex < 1) {
-                minPageIndex = 1;
-            }
-
-            let maxPageIndex = pageIndex + 2;
-            if (maxPageIndex > $scope.ProductsPage.totalPages) {
-                maxPageIndex = $scope.ProductsPage.totalPages;
-            }
-            //PaginationArray - индексы страниц сгенериные по странице
-            $scope.PaginationArray = $scope.generatePagesIndexes(minPageIndex, maxPageIndex);
-        });
-    };
-
-    $scope.showCart = function () {
-        $http.get(contextPath + '/api/v1/cart')
-            .then(function (response) {
-                $scope.Cart = response.data;
+    function config($routeProvider, $httpProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl:'home/home.html',
+                controller: 'homeController'
+            })
+            .when('/products', {
+                templateUrl: 'products/products.html',
+                controller: 'productsController'
+            })
+            .when('/cart', {
+                templateUrl: 'cart/cart.html',
+                controller: 'cartController'
+            })
+            .when('/order_confirmation', {
+                templateUrl: 'order_confirmation/order_confirmation.html',
+                controller: 'orderConfirmationController'
+            })
+            .when('/order_result/:orderId', {
+                templateUrl: 'order_result/order_result.html',
+                controller: 'orderResultController'
+            })
+            .when('/orders', {
+                templateUrl: 'orders/orders.html',
+                controller: 'ordersController'
+            })
+            .otherwise({
+                redirectTo: '/'
             });
-    };
 
-    //создает лист список страниц например с 5 по 15
-    $scope.generatePagesIndexes = function(startPage, endPage) {
-        let arr = [];
-        for (let i = startPage; i < endPage + 1; i++) {
-            arr.push(i);
+        // $httpProvider.interceptors.push(function ($q, $location) {
+        //     return {
+        //         'responseError': function (rejection, $localStorage, $http) {
+        //             console.log('intercepted');
+        //             var defer = $q.defer();
+        //             if (rejection.status == 401 || rejection.status == 403) {
+        //                 console.log('error: 401-403');
+        //                 $location.path('/auth');
+        //                 if (!(localStorage.getItem("localUser") === null)) {
+        //                     delete $localStorage.currentUser;
+        //                     $http.defaults.headers.common.Authorization = '';
+        //                 }
+        //                 console.log(rejection.data);
+        //                 var answer = JSON.parse(rejection.data);
+        //                 console.log(answer);
+        //                 // window.alert(answer.message);
+        //             }
+        //             defer.reject(rejection);
+        //             return defer.promise;
+        //         }
+        //     };
+        // });
+    }
+
+    //при старте
+    function run($rootScope, $http, $localStorage) {
+        if ($localStorage.currentUser) {//если в локальном есть юзер=> подшиваем токен к хедеру
+            $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.currentUser.token;
         }
-        return arr;
     }
+})();
 
-    //создание продукта
-    $scope.submitCreateNewProduct = function () {
-        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
-            .then(function (response) {
-//                console.log('sended: ');
-//                console.log($scope.newProduct);
-//                console.log('received: ');
-//                console.log(response.data);
-                $scope.newProduct = null;
-                $scope.fillTable();
-            });
-    };
+angular.module('app').controller('indexController', function ($scope, $http, $localStorage) {
+    const contextPath = 'http://localhost:8189/shop';
 
-    //удаление продукта по id
-    $scope.deleteProductById = function (productId) {
-        $http.delete(contextPath + '/api/v1/products/' + productId)
-            .then(function (response) {//когда сервак ответил все ок
-                $scope.fillTable();//перезаполняем таблицу
-            });
-    }
-
-    //добавление продукта в корзину по id
-    $scope.addToCart = function (productId) {
-        $http.get(contextPath + '/api/v1/cart/add/' + productId)
-            .then(function (response) {//когда сервак ответил все ок
-                $scope.showCart();
-                console.log('added');
-            });
-    }
-
-    //очистка корзины
-    $scope.clearCart = function () {
-        $http.get(contextPath + '/api/v1/cart/clear')
-            .then(function (response) {//когда сервак ответил все ок
-                $scope.showCart();
-            });
-    }
-
-    //авторизация
     $scope.tryToAuth = function () {
-        $http.post(contextPath + '/auth', $scope.user)//в тело пост запроса зашиваем json user
+        $http.post(contextPath + '/auth', $scope.user)
             .then(function successCallback(response) {
-                if (response.data.token) {//если в ответе есть json с токеном
-                    //ко всем запросам подшиваем в стандартный хэдер common.Authorization и туда подшиваем токен
+                if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $localStorage.currentUser = {username: $scope.user.username, token: response.data.token};
+
+                    $scope.currentUserName = $scope.user.username;
+
                     $scope.user.username = null;
                     $scope.user.password = null;
-                    $scope.authorized = true;
-                    $scope.fillTable();
+
+                    console.log($localStorage.currentUser);
                 }
             }, function errorCallback(response) {
-                //window.alert(response.data.message);
-                window.alert("authentication error");
-                $scope.clearUser();
+                // window.alert(response.data.message);
+                // $scope.clearUser();
             });
     };
 
 
+    $scope.tryToLogout = function () {
+        $scope.clearUser();
+        if ($scope.user.username) {
+            $scope.user.username = null;
+        }
+        if ($scope.user.password) {
+            $scope.user.password = null;
+        }
+    };
 
 
+    $scope.clearUser = function () {
+        delete $localStorage.currentUser;
+        $http.defaults.headers.common.Authorization = '';
+    };
 
-    // $scope.fillTable();
-    // $scope.showCart();
-
+    //
+    $scope.isUserLoggedIn = function () {
+        if ($localStorage.currentUser) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 });

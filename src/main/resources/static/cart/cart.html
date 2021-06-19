@@ -1,0 +1,28 @@
+<div>
+    <h3>Корзина</h3>
+    <table ng-show="Cart.items.length > 0" class="table table-hover" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <td>Название</td>
+            <td>Количество</td>
+            <td>Цена</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="oi in Cart.items">
+            <td>{{oi.productTitle}}</td>
+            <td>{{oi.quantity}}</td>
+            <td>{{oi.price}}</td>
+        </tr>
+        <tr>
+            <td>Итого</td>
+            <td></td>
+            <td>{{Cart.totalPrice}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <span ng-show="Cart.items.length == 0">Ваша корзина пуста</span>
+    <button ng-show="Cart.items.length > 0"  class="btn btn-primary" ng-click="goToOrderSubmit()">Перейти к оформлению заказа</button>
+    <button ng-show="Cart.items.length > 0"  class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
+</div>
+

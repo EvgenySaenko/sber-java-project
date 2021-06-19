@@ -1,0 +1,65 @@
+<h3>Фильтр</h3>
+<form novalidate ng-submit="showProductsPage()">
+    <div class="form-group row">
+        <div class="form-group col-md-3">
+            <label for="filterTitle">Название товара</label>
+            <input class="form-control" type="text" ng-model="filter.title" id="filterTitle">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="filterMinPrice">Минимальная цена</label>
+            <input class="form-control" type="number" ng-model="filter.min_price" id="filterMinPrice">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="filterMaxPrice">Максимальная цена</label>
+            <input class="form-control" type="number" ng-model="filter.max_price" id="filterMaxPrice">
+        </div>
+    </div>
+    <div class="form-group row">
+        <button class="btn btn-success" type="submit">Применить</button>
+    </div>
+</form>
+
+<h3>Список товаров</h3>
+<table class="table table-hover" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
+        <td>Название</td>
+        <td>Цена</td>
+        <td></td>
+        <td></td>
+    </tr>
+    </thead>
+    <tbody>
+    <!--                аналог цикла форыч-->
+    <!--                чтобы получить List нужно из Page достать контент-->
+    <tr ng-repeat="p in ProductsPage.content">
+        <td>{{p.title}}</td>
+        <td>{{p.price}}</td>
+        <td>
+            <button class="btn btn-primary" ng-click="addToCart(p.id)">Добавить в корзину</button>
+        </td>
+        <td>
+            <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Удалить товар</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li ng-class="ProductsPage.first ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" ng-click="showProductsPage(ProductsPage.number)">Пред.</a>
+        </li>
+
+        <li ng-class="ProductsPage.number == pageIndex - 1 ? 'page-item active' : 'page-item'"
+            ng-repeat="pageIndex in PaginationArray">
+            <a class="page-link" ng-click="showProductsPage(pageIndex)">{{pageIndex}}</a>
+        </li>
+
+        <li ng-class="ProductsPage.last ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" ng-click="showProductsPage(ProductsPage.number + 2)">След.</a>
+        </li>
+    </ul>
+</nav>
+

@@ -50,7 +50,7 @@ public class Cart {
     }
 
     public void recalculate() {
-        this.totalPrice = new BigDecimal(0.0);
+        this.totalPrice = new BigDecimal(0);
         for (OrderItem o : items) {
             this.totalPrice = this.totalPrice.add(o.getPrice());
         }

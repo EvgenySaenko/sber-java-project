@@ -3,7 +3,6 @@ package com.evgenys.online.shop.controllers;
 
 import com.evgenys.online.shop.dto.JwtRequest;
 import com.evgenys.online.shop.dto.JwtResponse;
-import com.evgenys.online.shop.exceptions.ResourceNotFoundException;
 import com.evgenys.online.shop.exceptions.ShopError;
 import com.evgenys.online.shop.services.UserService;
 import com.evgenys.online.shop.utils.token.JwtTokenUtil;
@@ -35,6 +34,6 @@ public class AuthController {//эта часть для получения то�
         }
         UserDetails userDetails = usersService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);//генерим токен
-        return ResponseEntity.ok(new JwtResponse(token));//и возвращаем токен в виде респонса
+        return ResponseEntity.ok(new JwtResponse(token));//в ручную выдаем токен не кладя в securityContext
     }
 }
