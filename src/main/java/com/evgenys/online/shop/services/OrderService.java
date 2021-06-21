@@ -1,8 +1,9 @@
 package com.evgenys.online.shop.services;
 
 
-import com.evgenys.online.shop.beans.Cart;
 import com.evgenys.online.shop.dto.OrderDto;
+import com.evgenys.online.shop.exceptions.ResourceNotFoundException;
+import com.evgenys.online.shop.persistence.entities.Cart;
 import com.evgenys.online.shop.persistence.entities.Order;
 import com.evgenys.online.shop.persistence.entities.User;
 import com.evgenys.online.shop.repositories.OrderRepository;
@@ -10,8 +11,10 @@ import com.evgenys.online.shop.utils.converter.OrderConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -19,13 +22,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final UserService userService;
+    private final CartService cartService;
     private final OrderConverter orderConverter;
-    private final Cart cart;
 
-
-    public Order saveOrder(Order order) {//сохраняя ордер-> сохраняем и ордер айтемы(включенно каскадирование)
+    @Transactional
+    public Order saveOrder(String username, UUID cartId,String address) {//сохраняя ордер-> сохраняем и ордер айтемы(включенно каскадирование)
+        User user = userService.findByUsername(username).orElseThrow(()->new ResourceNotFoundException("User with this name does not exist"));
+        Cart cart = cartService.findById(cartId).orElseThrow(()-> new ResourceNotFoundException("Unable to find cart with id: " + cartId));
+        Order order =  new Order(user,cart, user.getEmail(), address);
         return orderRepository.save(order);
-
     }
 
     public Optional<Order> findById(Long id) {

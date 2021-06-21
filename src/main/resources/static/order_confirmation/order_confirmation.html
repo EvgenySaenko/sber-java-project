@@ -1,5 +1,5 @@
 <h3>Ваш заказ</h3>
-<table ng-show="Cart.items.length > 0" class="table table-hover" cellpadding="0" cellspacing="0">
+<table ng-show="OnlineShopUserCart.items.length > 0" class="table table-hover" cellpadding="0" cellspacing="0">
     <thead>
     <tr>
         <td>Название</td>
@@ -8,7 +8,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="oi in Cart.items">
+    <tr ng-repeat="oi in OnlineShopUserCart.items">
         <td>{{oi.productTitle}}</td>
         <td>{{oi.quantity}}</td>
         <td>{{oi.price}}</td>
@@ -16,7 +16,7 @@
     <tr>
         <td>Итого</td>
         <td></td>
-        <td>{{Cart.totalPrice}}</td>
+        <td>{{OnlineShopUserCart.totalPrice}}</td>
     </tr>
     </tbody>
 </table>

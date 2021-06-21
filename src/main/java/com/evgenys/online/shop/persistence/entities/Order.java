@@ -1,6 +1,5 @@
 package com.evgenys.online.shop.persistence.entities;
 
-import com.evgenys.online.shop.beans.Cart;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -57,13 +56,15 @@ public class Order {
         this.items = new ArrayList<>();
         this.address = address;
         this.email = email;
-        cart.getItems().stream().forEach(oi -> {
-            oi.setOrder(this);
-            items.add(oi);
-        });
+
+       for(CartItem ci: cart.getItems()){
+           OrderItem oi = new OrderItem(ci);
+           oi.setOrder(this);
+           this.items.add(oi);
+       }
 
         //копируем стоимость всей корзины в наш заказ
-        this.price = BigDecimal.valueOf(cart.getTotalPrice().doubleValue());
+        this.price = BigDecimal.valueOf(cart.getPrice().doubleValue());
         //cart.clear();
     }
 

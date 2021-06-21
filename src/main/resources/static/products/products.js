@@ -1,4 +1,4 @@
-angular.module('app').controller('productsController', function ($scope, $http) {
+angular.module('app').controller('productsController', function ($scope, $http,$localStorage) {
     const contextPath = 'http://localhost:8189/shop';
 
     //отображение таблицы товаров
@@ -44,9 +44,16 @@ angular.module('app').controller('productsController', function ($scope, $http) 
 
     //добавление продукта в корзину по id
     $scope.addToCart = function (productId) {
-        $http.get(contextPath + '/api/v1/cart/add/' + productId)
-            .then(function (response) {//когда сервак ответил все ок
-            });
+        $http({
+            url: contextPath + '/api/v1/cart/add',
+            method: 'POST',
+            params: {
+                product_id: productId,
+                cartId: $localStorage.OnlineShopCartUuid
+            }
+        }).then(function (response) {
+            console.log("OK")
+        });
     }
 
 

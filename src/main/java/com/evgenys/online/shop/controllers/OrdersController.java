@@ -1,11 +1,12 @@
 package com.evgenys.online.shop.controllers;
 
 
-import com.evgenys.online.shop.beans.Cart;
 import com.evgenys.online.shop.dto.OrderDto;
 import com.evgenys.online.shop.exceptions.ResourceNotFoundException;
+import com.evgenys.online.shop.persistence.entities.Cart;
 import com.evgenys.online.shop.persistence.entities.Order;
 import com.evgenys.online.shop.persistence.entities.User;
+import com.evgenys.online.shop.services.CartService;
 import com.evgenys.online.shop.services.OrderService;
 import com.evgenys.online.shop.services.UserService;
 import com.evgenys.online.shop.utils.converter.OrderConverter;
@@ -15,26 +16,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 public class OrdersController {
-    private final UserService userService;
     private final OrderService orderService;
-    private final Cart cart;
     private final OrderConverter orderConverter;
+    private final CartService cartService;
 
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto createOrder(Principal principal, @RequestParam String address){
-        User user = userService.findByUsername(principal.getName()).orElseThrow(()->new ResourceNotFoundException("User with this name does not exist"));
-        Order order =  new Order(user,cart, user.getEmail(), address);
-        order = orderService.saveOrder(order);
-        cart.clear();
-        return orderConverter.convertToOrderDto(order);
+    public OrderDto createOrder(Principal principal, @RequestParam UUID cartId, @RequestParam String address){
+       Order order = orderService.saveOrder(principal.getName(), cartId, address);
+       cartService.clearCart(cartId);
+       return orderConverter.convertToOrderDto(order);
     }
 
     @GetMapping("/{id}")

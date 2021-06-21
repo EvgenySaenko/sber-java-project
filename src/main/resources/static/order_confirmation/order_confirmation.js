@@ -1,18 +1,22 @@
-angular.module('app').controller('orderConfirmationController', function ($scope, $http, $location) {
+angular.module('app').controller('orderConfirmationController', function ($scope, $http, $location, $localStorage) {
     const contextPath = 'http://localhost:8189/shop';
 
-    $scope.cartContentRequest = function () {
-        $http.get(contextPath + '/api/v1/cart')
+    //загрузить корзину
+    $scope.loadCart = function () {
+        $http.get(contextPath + '/api/v1/cart/' + $localStorage.OnlineShopCartUuid)
             .then(function (response) {
-                $scope.Cart = response.data;
+                $scope.OnlineShopUserCart = response.data;//получили корзину
             });
     }
 
+
+    //подтвердить заказ
     $scope.submitOrder = function () {
         $http({
             url: contextPath + '/api/v1/orders',
             method: 'POST',
             params: {
+                cartId: $localStorage.OnlineShopCartUuid,
                 address: $scope.orderInfo.address
             }
         }).then(function (response){
@@ -20,5 +24,5 @@ angular.module('app').controller('orderConfirmationController', function ($scope
         });
     }
 
-    $scope.cartContentRequest();
+    $scope.loadCart();
 });

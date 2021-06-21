@@ -47,25 +47,10 @@ public class OrderItem {//одна позиция в заказе
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public OrderItem(Product product){
-        this.product = product;
-        this.quantity = 1;
-        this.pricePerProduct = new BigDecimal(0).add(product.getPrice());//цена одного продукта
-        this.price = this.pricePerProduct.multiply(new BigDecimal(this.quantity));//считаем общую сумму(за milk - 5шт) например
-    }
-
-    public void increment() {
-        this.quantity++;
-        this.price =  new BigDecimal(this.quantity).multiply(BigDecimal.valueOf(this.product.getPrice().doubleValue()));
-        //this.price = new BigDecimal(this.quantity * this.product.getPrice().doubleValue());
-    }
-
-    public void decrement() {
-        this.quantity--;
-        this.price =  new BigDecimal(this.quantity).multiply(BigDecimal.valueOf(this.product.getPrice().doubleValue()));
-    }
-
-    public boolean isEmpty(){
-        return quantity == 0;
+    public OrderItem(CartItem cartItem){
+        this.product = cartItem.getProduct();
+        this.quantity = cartItem.getQuantity();
+        this.pricePerProduct = new BigDecimal(0).add(cartItem.getPricePerProduct());//цена одного продукта
+        this.price = new BigDecimal(0).add(cartItem.getPrice());
     }
 }

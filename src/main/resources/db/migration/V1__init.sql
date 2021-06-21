@@ -111,3 +111,25 @@ create table order_items (
 
 
 
+create table carts (
+    id                         UUID primary key,
+    owner_id                   bigint references users (id),
+    price                      numeric(8, 2)
+);
+
+
+
+create table cart_items (
+    id                         bigserial primary key,
+    cart_id                    UUID references carts (id),
+    product_id                 bigint references products(id),
+    title                      varchar(255),
+    quantity                   int,
+    price_per_product          numeric(8, 2),
+    price                      numeric(8, 2),
+    created_at                 timestamp default current_timestamp,
+    updated_at                 timestamp default current_timestamp
+);
+
+
+
