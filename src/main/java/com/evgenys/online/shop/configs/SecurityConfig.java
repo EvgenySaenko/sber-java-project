@@ -19,6 +19,7 @@ import javax.persistence.EntityManager;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Slf4j
+@EnableGlobalMethodSecurity(prePostEnabled = true)//в связце с  @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtRequestFilter jwtRequestFilter;
 
@@ -29,7 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/orders/**").authenticated()
+                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/", "/fonts/**").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

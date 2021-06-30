@@ -1,0 +1,11 @@
+<h1>Изменить товар</h1>
+<form action="@{/products/edit}" object="${product}" method="POST">
+    <input hidden field="*{id}"/>
+    <br>
+    Name: <input field="*{title}"/>
+    <br>
+    Score: <input field="*{price}"/>
+    <br>
+    <input type="submit" value="Сохранить" />
+</form>
+<br>l>

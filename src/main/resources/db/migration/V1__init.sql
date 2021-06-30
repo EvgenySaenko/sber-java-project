@@ -2,9 +2,12 @@
 drop table if exists users;
 create table users (
    id                    bigserial primary key,
-   username              VARCHAR(30) not null UNIQUE,
-   password              VARCHAR(80) not null,
+   username              VARCHAR(30) NOT NULL UNIQUE,
+   password              VARCHAR(80) NOT NULL,
+   first_name            VARCHAR(255) NOT NULL,
+   last_name             VARCHAR(255),
    email                 VARCHAR(50) UNIQUE,
+   phone                 VARCHAR(255) NOT NULL UNIQUE,
    created_at            timestamp default current_timestamp,
    updated_at            timestamp default current_timestamp
 );
@@ -33,10 +36,10 @@ values
 ('ROLE_ADMIN');
 
 
-insert into users (username, password, email)
+insert into users (username, password, first_name, last_name, email, phone)
 values
-('bob','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','bob@gmail.com'),
-('john','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','john@gmail.com');
+('bob','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Bobby','Fischer','bob@gmail.com','8-988-555-35-35'),
+('john','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Jhon','Connor','john@gmail.com','8-904-222-33-77');
 
 
 insert into users_roles (user_id, role_id)

@@ -3,12 +3,9 @@ package com.evgenys.online.shop.controllers;
 
 import com.evgenys.online.shop.dto.OrderDto;
 import com.evgenys.online.shop.exceptions.ResourceNotFoundException;
-import com.evgenys.online.shop.persistence.entities.Cart;
 import com.evgenys.online.shop.persistence.entities.Order;
-import com.evgenys.online.shop.persistence.entities.User;
 import com.evgenys.online.shop.services.CartService;
 import com.evgenys.online.shop.services.OrderService;
-import com.evgenys.online.shop.services.UserService;
 import com.evgenys.online.shop.utils.converter.OrderConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

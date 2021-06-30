@@ -1,21 +1,19 @@
-<h3>Фильтр</h3>
+<br>
+<h5>Фильтр по товарам</h5>
 <form novalidate ng-submit="showProductsPage()">
-    <div class="form-group row">
+    <div class="form-row align-items-center">
         <div class="form-group col-md-3">
-            <label for="filterTitle">Название товара</label>
-            <input class="form-control" type="text" ng-model="filter.title" id="filterTitle">
+            <input class="form-control" type="text" ng-model="filter.title" id="filterTitle" placeholder="Название товара">
         </div>
         <div class="form-group col-md-3">
-            <label for="filterMinPrice">Минимальная цена</label>
-            <input class="form-control" type="number" ng-model="filter.min_price" id="filterMinPrice">
+            <input class="form-control" type="number" ng-model="filter.min_price" id="filterMinPrice" placeholder="Минимальная цена">
         </div>
         <div class="form-group col-md-3">
-            <label for="filterMaxPrice">Максимальная цена</label>
-            <input class="form-control" type="number" ng-model="filter.max_price" id="filterMaxPrice">
+            <input class="form-control" type="number" ng-model="filter.max_price" id="filterMaxPrice" placeholder="Максимальная цена">
         </div>
-    </div>
-    <div class="form-group row">
-        <button class="btn btn-success" type="submit">Применить</button>
+        <div class="form-group col-md-3">
+            <button class="form-control align-middle btn btn-dark" type="submit">Применить</button>
+        </div>
     </div>
 </form>
 
@@ -26,20 +24,16 @@
         <td>Название</td>
         <td>Цена</td>
         <td></td>
-        <td></td>
+        <td>Действие</td>
     </tr>
     </thead>
     <tbody>
-    <!--                аналог цикла форыч-->
-    <!--                чтобы получить List нужно из Page достать контент-->
     <tr ng-repeat="p in ProductsPage.content">
         <td>{{p.title}}</td>
         <td>{{p.price}}</td>
+        <td></td>
         <td>
-            <button class="btn btn-primary" ng-click="addToCart(p.id)">Добавить в корзину</button>
-        </td>
-        <td>
-            <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Удалить товар</button>
+            <button class="btn btn btn-dark" ng-click="addToCart(p.id)">Добавить в корзину</button>
         </td>
     </tr>
 

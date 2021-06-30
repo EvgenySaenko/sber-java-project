@@ -2,16 +2,12 @@ package com.evgenys.online.shop.controllers;
 
 import com.evgenys.online.shop.dto.CartDto;
 import com.evgenys.online.shop.exceptions.ResourceNotFoundException;
-import com.evgenys.online.shop.persistence.entities.Cart;
-import com.evgenys.online.shop.persistence.entities.User;
 import com.evgenys.online.shop.services.CartService;
-import com.evgenys.online.shop.services.UserService;
 import com.evgenys.online.shop.utils.converter.CartConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController

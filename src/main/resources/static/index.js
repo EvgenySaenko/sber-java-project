@@ -20,6 +20,14 @@
                 templateUrl: 'cart/cart.html',
                 controller: 'cartController'
             })
+            .when('/admin', {
+                templateUrl: 'admin/admin.html',
+                controller: 'adminController'
+            })
+            .when('/profile', {
+                templateUrl: 'profile/profile.html',
+                controller: 'profileController'
+            })
             .when('/order_confirmation', {
                 templateUrl: 'order_confirmation/order_confirmation.html',
                 controller: 'orderConfirmationController'
@@ -31,6 +39,18 @@
             .when('/orders', {
                 templateUrl: 'orders/orders.html',
                 controller: 'ordersController'
+            })
+            .when('/registration', {
+                templateUrl: 'registration/registration.html',
+                controller: 'registrationController'
+            })
+            .when('/successful_registration', {
+                templateUrl: 'successful_registration/successful_registration.html',
+                controller: 'successful_registrationController'
+            })
+            .when('/error', {
+                templateUrl: 'error/error.html',
+                controller: 'errorController'
             })
             .otherwise({
                 redirectTo: '/'
@@ -65,10 +85,14 @@ angular.module('app').controller('indexController', function ($scope, $http, $lo
         $http.post(contextPath + '/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
+                    //console.log(JSON.parse(JSON.stringify(response.data)));
+
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $localStorage.currentUser = {username: $scope.user.username, token: response.data.token};
+                    $localStorage.currentUser = {username: $scope.user.username, token: response.data.token, admin: response.data.admin};
 
                     $scope.currentUserName = $scope.user.username;
+                    $scope.isAdmin = response.data.admin;//получаем булево является ли админом
+
 
                     $scope.user.username = null;
                     $scope.user.password = null;
@@ -82,6 +106,19 @@ angular.module('app').controller('indexController', function ($scope, $http, $lo
     };
 
 
+
+
+
+
+
+
+    //в менюнавигации показывает кнуопку админ если юзер админ
+    $scope.hasRoleAdmin = function () {
+       return $scope.isAdmin;
+    }
+
+
+
     //разлогинимся
     $scope.tryToLogout = function () {
         $scope.clearUser();
@@ -90,7 +127,7 @@ angular.module('app').controller('indexController', function ($scope, $http, $lo
             .then(function (response) {
                 $localStorage.OnlineShopCartUuid = response.data;//сохраняем UUID корзины
             });
-
+        $scope.isAdmin = false;
         $location.path('/');
         if ($scope.user.username) {
             $scope.user.username = null;
@@ -114,4 +151,6 @@ angular.module('app').controller('indexController', function ($scope, $http, $lo
             return false;
         }
     };
+
+
 });
