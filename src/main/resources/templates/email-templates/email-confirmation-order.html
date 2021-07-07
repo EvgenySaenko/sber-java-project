@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:remove="all">Подтверждение заказа Online Shop</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col">
+                    <h3 class="text-center" th:text="'Заказ на имя ' + ${user_first_name} + ' под № ' + ${order_id} + ' успешно сформирован!' "> </h3>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <td>Название</td>
+                    <td>Количество</td>
+                    <td>Цена</td>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="i : ${order_items}">
+                    <td th:text="${i.product.title}"></td>
+                    <td><span th:text="'  ' + ${i.quantity} + '  '"/></td>
+                    <td th:text="${i.price}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <hr>
+            <div class="row justify-content-center align-items-center">
+                <div class="col">
+                    <h3 class="text-center" th:text="'Общая стоимость заказа: ' + ${order_price}"> </h3>
+                </div>
+            </div>
+            <hr>
+            <div class="row justify-content-center align-items-center">
+                <div class="col">
+                    <span th:text="'Наши менеджеры свяжутся с вами в ближайшее время по указаному вами телефону: ' + ${user_phone}"/>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center">
+                <div class="col">
+                    <span th:text="'В течении суток транспортная кампания свяжется с вами, уточнить не изменился ли адрес доставки: ' + ${order_address}"/>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

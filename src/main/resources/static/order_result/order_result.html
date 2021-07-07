@@ -1,10 +1,39 @@
-<div >
-    <div>
-        <h3> Ваш заказ #{{OrderInfo.id}}  успешно сформирован! </h3>
-        <h3> Общая стоимость - {{OrderInfo.totalPrice}} рублей </h3>
-        <h3> Спасибо за покупку! </h3>
+<br>
+<div class="row justify-content-center align-items-center">
+    <div class="col">
+        <h4><strong>Ваш заказ #{{OrderInfo.id}} успешно сформирован!   Дата формирования заказа: #{{OrderInfo.creationDateTime}}</strong> </h4>
     </div>
-    <div>
-        <a class="btn btn-primary" href="#/">Вернуться на главную страницу</a>
+
+</div>
+<div class="row justify-content-center align-items-center">
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr >
+            <td>Название</td>
+            <td>Количество</td>
+            <td>Цена</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="oi in OrderInfo.items">
+            <td>{{oi.productTitle}}</td>
+            <td>{{oi.quantity}}</td>
+            <td>{{oi.price}}</td>
+        </tr>
+        <tr>
+            <td><strong>Итого</strong></td>
+            <td></td>
+            <td><strong>{{OrderInfo.totalPrice}}</strong></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<hr>
+<div class="row justify-content-center align-items-center">
+    <div class="col">
+        <h5><strong>На ваш e-mail отправлено письмо с данными o заказе, по другим вопросам обращаться по телефону: 8-800-555-55-55</strong></h5>
     </div>
 </div>
+<hr>
+
+

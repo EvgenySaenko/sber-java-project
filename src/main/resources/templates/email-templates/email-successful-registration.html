@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Подтверждение регистрации</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col">
+            <h3 class="text-center" th:text="${name} + ', поздравляем с успешной регистрацией!' "></h3>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <div class="col">
+            <h3 class="text-center" th:text="'Ваши данные для входа на сайт:' "></h3>
+        </div>
+    </div>
+    <hr>
+    <div class="row justify-content-center align-items-center">
+        <div class="col">
+            <h3 class="text-center" th:text="'логин: ' + ${username}"></h3>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <div class="col">
+            <h3 class="text-center" th:text="'пароль: ' + ${password}"></h3>
+        </div>
+    </div>
+    <hr>
+    <div class="row justify-content-center align-items-center">
+        <div class="col">
+            <h3 class="text-center" th:text="'Для подтверждения e-mail, пожалуйста перейдите по ссылке на страницу активации:'"></h3>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <div class="col">
+            <a th:href="@{'http://localhost:8189/shop/index.html?#!/activate/' + ${activation_code}}"></a>
+        </div>
+    </div>
+    <hr>
+    <div class="row justify-content-center align-items-center">
+        <div class="col">
+            <span th:text="'По интересующим Вас вопросам обращайтесь по телефону: 8-800-555-55-55 или e-mail: support-onlineshop2021@gmail.com'"/>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

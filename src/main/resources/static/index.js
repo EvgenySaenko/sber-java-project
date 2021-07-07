@@ -48,6 +48,11 @@
                 templateUrl: 'successful_registration/successful_registration.html',
                 controller: 'successful_registrationController'
             })
+            .when('/activate/:code', {
+                templateUrl: 'confirmation_email/confirmation_email.html',
+                controller: 'activateController'
+            })
+
             .when('/error', {
                 templateUrl: 'error/error.html',
                 controller: 'errorController'
@@ -74,7 +79,6 @@
 })();
 
 
-
 angular.module('app').controller('indexController', function ($scope, $http, $localStorage, $location) {
     const contextPath = 'http://localhost:8189/shop';
 
@@ -88,7 +92,11 @@ angular.module('app').controller('indexController', function ($scope, $http, $lo
                     //console.log(JSON.parse(JSON.stringify(response.data)));
 
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $localStorage.currentUser = {username: $scope.user.username, token: response.data.token, admin: response.data.admin};
+                    $localStorage.currentUser = {
+                        username: $scope.user.username,
+                        token: response.data.token,
+                        admin: response.data.admin
+                    };
 
                     $scope.currentUserName = $scope.user.username;
                     $scope.isAdmin = response.data.admin;//получаем булево является ли админом
@@ -97,6 +105,7 @@ angular.module('app').controller('indexController', function ($scope, $http, $lo
                     $scope.user.username = null;
                     $scope.user.password = null;
 
+                    $location.path('/');//после входа на сайт - перекидваем на главную
                     console.log($localStorage.currentUser);
                 }
             }, function errorCallback(response) {
@@ -106,17 +115,10 @@ angular.module('app').controller('indexController', function ($scope, $http, $lo
     };
 
 
-
-
-
-
-
-
     //в менюнавигации показывает кнуопку админ если юзер админ
     $scope.hasRoleAdmin = function () {
-       return $scope.isAdmin;
+        return $scope.isAdmin;
     }
-
 
 
     //разлогинимся

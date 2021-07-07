@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class OrderConverter {
+    private final OrderItemsConverter orderItemsConverter;
 
     private DateTimeFormatter formatter;
 
@@ -20,7 +22,6 @@ public class OrderConverter {
         this.formatter = DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy");
 
     }
-//LocalDateTime.parse(order.getCreatedAt().toString(),formatter).toString()
     public OrderDto convertToOrderDto(Order order){
         return OrderDto.builder()
                 .id(order.getId())
@@ -28,6 +29,7 @@ public class OrderConverter {
                 .address(order.getAddress())
                 .totalPrice(BigDecimal.valueOf(order.getPrice().doubleValue()))
                 .creationDateTime(formatter.format(order.getCreatedAt()))
-                .build();
+                .items(order.getItems().stream().map(orderItemsConverter::convertToOrderItemDto).collect(Collectors.toList()))
+        .build();
     }
 }

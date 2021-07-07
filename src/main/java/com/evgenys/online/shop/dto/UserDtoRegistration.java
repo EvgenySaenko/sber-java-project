@@ -21,4 +21,5 @@ public class UserDtoRegistration {
 
     private String email;
     private String phone;
+
 }

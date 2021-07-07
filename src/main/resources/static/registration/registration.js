@@ -3,7 +3,7 @@ angular.module('app').controller('registrationController', function ($scope, $ht
 
     //регистрация
     $scope.tryToReg = function () {
-        $http.post(contextPath + '/reg', $scope.user)
+        $http.post(contextPath + '/registration', $scope.user)
             .then(function successCallback(response) {
                 console.log(response.data + " successfully");
                 $location.path('/successful_registration' );

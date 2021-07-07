@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.UUID;
 
 @Entity
 @Builder
@@ -40,6 +41,9 @@ public class User {
 
     @Column(name = "phone")
     private String phone;
+
+    @Column(name = "activation_code")
+    private String activationCode;
 
 
     @ManyToMany()

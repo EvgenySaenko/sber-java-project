@@ -8,6 +8,7 @@ create table users (
    last_name             VARCHAR(255),
    email                 VARCHAR(50) UNIQUE,
    phone                 VARCHAR(255) NOT NULL UNIQUE,
+   activation_code       VARCHAR(255),
    created_at            timestamp default current_timestamp,
    updated_at            timestamp default current_timestamp
 );
