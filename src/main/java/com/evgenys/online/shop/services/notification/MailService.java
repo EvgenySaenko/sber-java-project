@@ -32,6 +32,7 @@ public class MailService {
         sendMessage(to, subject, body);
     }
 
+    //успешная регистрация
     public void sendMessageSuccessfulRegistration(String to, String subject, String name,String username, String password, String activationCode) {
         String message = generateMessageSuccessfulRegistration(name,username,password,activationCode);
 
@@ -42,6 +43,18 @@ public class MailService {
         mailMessage.setText(message);
         mailSender.send(mailMessage);
     }
+
+    //изменен статус доставки
+    public void sendMessageChangedDeliveryStatus(String to, String subject,String message){
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(username);
+        mailMessage.setTo(to);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+        mailSender.send(mailMessage);
+    }
+
+
 
     public void sendMessage(String emailTo, String subject, String message){
         try {

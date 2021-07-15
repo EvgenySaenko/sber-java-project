@@ -19,7 +19,7 @@ import javax.persistence.EntityManager;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Slf4j
-@EnableGlobalMethodSecurity(prePostEnabled = true)//в связце с  @PreAuthorize("hasRole('ROLE_ADMIN')")
+@EnableGlobalMethodSecurity(prePostEnabled = true)//в связке с  @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtRequestFilter jwtRequestFilter;
 

@@ -1,7 +1,9 @@
 package com.evgenys.online.shop.utils.converter;
 
+import com.evgenys.online.shop.dto.DeliveryOrderDto;
 import com.evgenys.online.shop.dto.OrderDto;
 import com.evgenys.online.shop.persistence.entities.Order;
+import com.evgenys.online.shop.persistence.entities.StorePoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -31,5 +33,16 @@ public class OrderConverter {
                 .creationDateTime(formatter.format(order.getCreatedAt()))
                 .items(order.getItems().stream().map(orderItemsConverter::convertToOrderItemDto).collect(Collectors.toList()))
         .build();
+    }
+
+    public DeliveryOrderDto convertToDeliveryOrderDto(Order order, StorePoint storePoint){
+        return DeliveryOrderDto.builder()
+                .id(order.getId())
+                .firstName(order.getUser().getFirstName())
+                .addressFrom(storePoint.getCity() + " " + storePoint.getStreet() + " " + storePoint.getHouseNumber())
+                .addressTo(order.getAddress())
+                .totalPrice(BigDecimal.valueOf(order.getPrice().doubleValue()))
+                .creationDateTime(formatter.format(order.getCreatedAt()))
+                .build();
     }
 }

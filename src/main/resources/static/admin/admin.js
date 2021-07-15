@@ -6,7 +6,7 @@ angular.module('app').controller('adminController', function ($scope, $http, $lo
     //отображение таблицы товаров
     $scope.showProductsPage = function (pageIndex = 1) {
         $http({
-            url: contextPath + '/api/vi/admin',
+            url: contextPath + '/api/v1/admin',
             method: 'GET',
             params: {
                 title: $scope.filter ? $scope.filter.title : null,
@@ -50,7 +50,7 @@ angular.module('app').controller('adminController', function ($scope, $http, $lo
 
     //добавить новый продукт
     $scope.addProduct = function () {
-        $http.post(contextPath + '/api/vi/admin', $scope.newProduct)
+        $http.post(contextPath + '/api/v1/admin', $scope.newProduct)
             .then(function (response) {
                 $scope.newProduct = null;
                 $scope.showProductsPage($scope.ProductsPage.totalPages);
@@ -69,7 +69,7 @@ angular.module('app').controller('adminController', function ($scope, $http, $lo
 
     //редактировать продукт
     $scope.editProduct = function () {
-        $http.put(contextPath + '/api/vi/admin', $scope.editableProduct)
+        $http.put(contextPath + '/api/v1/admin', $scope.editableProduct)
             .then(function (response) {
                 $scope.showProductsPage($scope.ProductsPage.number + 1);
             });
@@ -81,7 +81,7 @@ angular.module('app').controller('adminController', function ($scope, $http, $lo
 
     //удаление продукта по id
     $scope.deleteProductById = function (productId) {
-        $http.delete(contextPath + '/api/vi/admin/' + productId)
+        $http.delete(contextPath + '/api/v1/admin/' + productId)
             .then(function (response) {
                 $scope.showProductsPage($scope.ProductsPage.number + 1);
             });

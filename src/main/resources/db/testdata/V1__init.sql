@@ -40,6 +40,7 @@ values
 insert into users (username, password, first_name, last_name, email, phone)
 values
 ('bob','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Bobby','Fischer','bob@gmail.com','8-988-555-35-35'),
+('don','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Donald','Duck','don@gmail.com','8-977-222-44-44'),
 ('john','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Jhon','Connor','john@gmail.com','8-904-222-33-77');
 
 
@@ -56,9 +57,6 @@ create table products (
      created_at        timestamp default current_timestamp,
      updated_at        timestamp default current_timestamp
 );
-
-
-
 
 
 insert into products(title, price)
@@ -137,28 +135,6 @@ create table cart_items (
     created_at                 timestamp default current_timestamp,
     updated_at                 timestamp default current_timestamp
 );
-
-create table store_points (
-                              id                bigserial primary key,
-                              city              varchar(255) not null,
-                              street            varchar (255) not null,
-                              house_number      bigint not null
-);
-
-insert into store_points(city,street,house_number)
-values
-('Ростов-на-дону', 'Красноармейская', 123),
-('Ростов-на-дону', 'Ленина', 89),
-('Ростов-на-дону', 'Комарова', 99),
-('Ростов-на-дону', 'Кирова', 78),
-('Ростов-на-дону', 'Ворошиловский', 56),
-('Ростов-на-дону', 'Буденовский', 7),
-('Ростов-на-дону', 'Станиславского', 25),
-('Ростов-на-дону', 'Стачки', 48),
-('Ростов-на-дону', 'Семашко', 13),
-('Ростов-на-дону', 'Соборный', 75),
-('Ростов-на-дону', 'Московская', 25),
-('Ростов-на-дону', 'Ларина', 43);
 
 
 

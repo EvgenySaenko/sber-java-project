@@ -16,32 +16,23 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
 
-#  mail:
-#    host: smtp.gmail.com
-#    port: 587
-#    username: onlineshopevgenys2021@gmail.com
-#    password: IU3wdZMxdXGB
-#    protocol: smtp
-#    default-encoding: UTF-8
-#    properties:
-#      mail:
-#        smtp:
-#          starttls:
-#            enable: true
-
-
-
-
-
-
-
-
-  thymeleaf:
-    cache: false
-
-
   h2:
     console:
       enabled: true
       settings:
-        web-allow-others: false
+        web-allow-others: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  thymeleaf:
+    cache: false
+
+onlineshop:
+  rabbitmq:
+    exchange: onlineshop.exchange
+    routingkeyorder: onlineshop.order
+    routingkeystatus: delivery.status
+    queue: onlineshop.queue
