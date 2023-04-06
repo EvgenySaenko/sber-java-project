@@ -1,0 +1,33 @@
+<br>
+<h3>Ваш заказ</h3>
+<table ng-show="OnlineShopUserCart.items.length > 0" class="table table-hover" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
+        <td>Название</td>
+        <td>Количество</td>
+        <td>Цена</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="oi in OnlineShopUserCart.items">
+        <td>{{oi.productTitle}}</td>
+        <td>{{oi.quantity}}</td>
+        <td>{{oi.price}}</td>
+    </tr>
+    <tr>
+        <td>Итого</td>
+        <td></td>
+        <td>{{OnlineShopUserCart.totalPrice}}</td>
+    </tr>
+    </tbody>
+</table>
+<form novalidate ng-submit="submitOrder()">
+    <div class="form-group col-md-6">
+        <label for="orderAddress">Адрес доставки</label>
+        <input class="form-control" id="orderAddress" type="text" ng-model="orderInfo.address"
+               placeholder="введите адрес">
+    </div>
+    <div>
+        <button class="btn btn-success" type="submit">Оформить заказ</button>
+    </div>
+</form>

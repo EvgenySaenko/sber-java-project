@@ -1,0 +1,54 @@
+
+<br>
+<br>
+<br>
+<div class="row">
+    <div class="col">
+        <h3 class="text-center" id="registrationPage">Регистрация на сайте</h3>
+    </div>
+</div>
+<br>
+<br>
+<form novalidate ng-submit="tryToReg()">
+    <div class="row justify-content-center align-items-center">
+        <div class="form-group col-md-4">
+            <label for="lastName">Фамилия</label>
+            <input class="form-control" type="text" placeholder="Фамилия" ng-model="user.lastName" id="lastName">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="firstName">Имя <em>(обязательное поле)</em></label>
+            <input class="form-control" type="text" placeholder="Имя" ng-model="user.firstName" id="firstName">
+        </div>
+    </div>
+    <br>
+
+    <div class="row justify-content-center align-items-center">
+        <div class="form-group col-md-4">
+            <label for="username">Логин <em>(обязательное поле)</em></label>
+            <input class="form-control" type="text" placeholder="Логин" ng-model="user.username" id="username">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="password">Пароль <em>(обязательное поле)</em></label>
+            <input class="form-control" type="text" placeholder="Пароль" ng-model="user.password" id="password">
+        </div>
+    </div>
+    <br>
+
+    <div class="row justify-content-center align-items-center">
+        <div class="form-group col-md-4">
+            <label for="email">E-mail <em>(обязательное поле)</em></label>
+            <input class="form-control" type="text" placeholder="E-mail" ng-model="user.email" id="email">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="phone">Телефон <em>(обязательное поле)</em></label>
+            <input class="form-control" type="text" placeholder="Телефон" ng-model="user.phone" id="phone">
+        </div>
+    </div>
+    <br>
+
+    <div class="row justify-content-center align-items-center">
+        <button class="btn btn-success" type="submit">Зарегистрироваться</button>
+    </div>
+    </div>
+</form>
+

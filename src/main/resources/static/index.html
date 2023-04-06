@@ -1,0 +1,106 @@
+<!doctype html>
+
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <title>Online Shop</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+
+    <!--    тема   -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/simplex/bootstrap.min.css">
+
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/solar/bootstrap.min.css" >-->
+    <!--    black style -->
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css" >-->
+    <!--    black style -->
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/materia/bootstrap.min.css">-->
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Online Shop</h1>
+    <div ng-controller="indexController">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Online Shop</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item active p-2">
+                        <a class="btn btn-outline-light" href="#!/">Главная</a>
+                    </li>
+                    <li class="nav-item  p-2">
+                        <a class="btn btn-outline-light" href="#!/products">Каталог товаров</a>
+                    </li>
+                    <li class="nav-item  p-2" ng-if="isUserLoggedIn()">
+                        <a class="btn btn-outline-light" href="#!/orders">Мои заказы</a>
+                    </li>
+                    <li class="nav-item  p-2">
+                        <a class="btn btn-outline-light" href="#!/cart">Корзина</a>
+                    </li>
+                    <li class="nav-item  p-2" ng-show="hasRoleAdmin()">
+                        <a class="btn btn-primary" href="#!/admin">Админ</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right d-flex align-items-center">
+                    <li class="nav-item p-2 " ng-show="!isUserLoggedIn()">
+                        <form method="POST" class="form-inline" ng-submit="tryToAuth()">
+                            <div class="nav-item  p-2">
+                                <input id="navLoginField" class="form-control" ng-model="user.username" type="text"
+                                       placeholder="username">
+                            </div>
+                            <div class="nav-item  p-2">
+                                <input id="navPasswordField" class="form-control" ng-model="user.password"
+                                       type="password" placeholder="password">
+                            </div>
+                            <div class="nav-item  p-2">
+                                <button id="navLoginSubmit" type="submit" class="btn btn-outline-light" >Войти</button>
+                            </div>
+
+                        </form>
+                    </li>
+                    <li class="nav-item  p-2" ng-show="isUserLoggedIn()">
+                        <a class="btn btn-outline-light" href="#!/profile">{{currentUserName}}</a>
+                    </li>
+                    <li class="nav-item p-2" ng-show="isUserLoggedIn()">
+                        <a class="btn btn-outline-light" ng-click="tryToLogout()" href="">Выйти</a>
+                    </li>
+                    <li class="nav-item p-2"  ng-show="!isUserLoggedIn()">
+                        <a class="btn btn-outline-light " href="#!/registration">Регистрация</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
+    <ng-view></ng-view>
+
+
+    <script src="index.js"></script>
+    <script src="home/home.js"></script>
+    <script src="products/products.js"></script>
+    <script src="cart/cart.js"></script>
+    <script src="admin/admin.js"></script>
+    <script src="profile/profile.js"></script>
+    <script src="order_confirmation/order_confirmation.js"></script>
+    <script src="order_result/order_result.js"></script>
+    <script src="orders/orders.js"></script>
+    <script src="registration/registration.js"></script>
+    <script src="successful_registration/successful_registration.js"></script>
+    <script src="confirmation_email/confirmation_email.js"></script>
+    <script src="error/error.js"></script>
+</div>
+</body>
+</html>

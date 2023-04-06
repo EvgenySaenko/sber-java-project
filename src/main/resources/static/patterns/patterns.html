@@ -1,0 +1,132 @@
+
+
+<!--навигационная панель-->
+                <nav class="navbar navbar-expand-sm bg-dark navbar-dark ">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active p-2">
+                            <a class="btn btn-outline-light" href="#!/">Главная</a>
+                        </li>
+                        <li class="nav-item  p-2">
+                            <a class="btn btn-outline-light" href="#!/products">Каталог товаров</a>
+                        </li>
+                        <li class="nav-item  p-2" ng-if="isUserLoggedIn()">
+                            <a class="btn btn-outline-light" href="#!/orders">Мои заказы</a>
+                        </li>
+                        <li class="nav-item  p-2">
+                            <a class="btn btn-outline-light" href="#!/cart">Корзина</a>
+                        </li>
+                        <li class="nav-item  p-2" ng-show="hasRoleAdmin()">
+                            <a class="btn btn-outline-light" href="#!/admin">Админ</a>
+                        </li>
+                        <li class="nav-item p-2 pull-right" ng-show="!isUserLoggedIn()">
+                            <form method="POST" class="form-inline" ng-submit="tryToAuth()">
+                                <div class="row">
+                                    <div class="col align-self-end">
+                                        <input id="navLoginField" class="form-control" ng-model="user.username" type="text"
+                                               placeholder="username">
+                                    </div>
+                                    <div class="col align-self-end">
+                                        <input id="navPasswordField" class="form-control" ng-model="user.password"
+                                               type="password" placeholder="password">
+                                    </div>
+                                    <div class="col align-self-end">
+                                        <button id="navLoginSubmit" type="submit" class="btn btn-light " >Войти</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li class="nav-item  p-2 d-flex justify-content-end" ng-show="isUserLoggedIn()">
+                            <a class="btn btn-light" href="#!/profile">{{currentUserName}}</a>
+                        </li>
+                        <li class="nav-item p-2" ng-show="isUserLoggedIn()">
+                            <a class="btn btn-primary " ng-click="tryToLogout()" href="">Выйти</a>
+                        </li>
+                    </ul>
+
+                </nav>
+
+
+<!--кнопка открытия модального окна-->
+<li class="nav-item p-2" ng-show="!isUserLoggedIn()">
+    <a class="btn btn-outline-light" href="#!/" data-toggle="modal" data-target="#logoutModal">Войти</a>
+</li>
+
+
+<!-- The ENTER FORM  Modal -->
+<div class="modal fade" id="logoutModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title text-center">Войти на сайт</h3>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <form novalidate ng-submit="tryToAuth()">
+                    <div class="form-group">
+                        <label for="login" class="form-control-label" >Логин:</label>
+                        <input type="text" class="form-control" id="login" ng-model="user.username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-control-label">Пароль:</label>
+                        <input type="text" class="form-control" id="password" ng-model="user.password">
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Выйти</button>
+                        <button id="btnInSubmit" type="submit" class="btn btn-dark" >Войти</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- The REGISTRATION FORM Modal -->
+<div class="modal fade" id="registrationModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title text-center">Зарегистрироваться</h3>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <form novalidate ng-submit="tryToReg()">
+                    <div class="form-group">
+                        <label for="regLastName" class="form-control-label">Фамилия:</label>
+                        <input type="text" class="form-control" id="regLastName" ng-model="user.lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="regFirstName" class="form-control-label">Имя:</label>
+                        <input type="text" class="form-control" id="regFirstName" ng-model="user.firstName">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhone" class="form-control-label">Телефон:</label>
+                        <input type="text" class="form-control" id="regPhone" ng-model="user.phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail" class="form-control-label">E-mail:</label>
+                        <input type="text" class="form-control" id="regEmail" ng-model="user.email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regLogin" class="form-control-label" >Логин(будет указываться при входе на сайт):</label>
+                        <input type="text" class="form-control" id="regLogin" ng-model="user.username">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword" class="form-control-label">Пароль:</label>
+                        <input type="text" class="form-control" id="regPassword" ng-model="user.password">
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Выйти</button>
+                        <button id="btnRegSubmit" type="submit" class="btn btn-dark" >Войти</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

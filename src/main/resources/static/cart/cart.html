@@ -1,0 +1,29 @@
+<br>
+<div>
+    <h3>Корзина</h3>
+    <table ng-show="OnlineShopUserCart.items.length > 0" class="table table-hover" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <td>Название</td>
+            <td>Количество</td>
+            <td>Цена</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="oi in OnlineShopUserCart.items">
+            <td>{{oi.productTitle}}</td>
+            <td>{{oi.quantity}}</td>
+            <td>{{oi.price}}</td>
+        </tr>
+        <tr>
+            <td>Итого</td>
+            <td></td>
+            <td>{{OnlineShopUserCart.totalPrice}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <span ng-show="OnlineShopUserCart.items.length == 0">Ваша корзина пуста</span>
+    <button ng-show="OnlineShopUserCart.items.length > 0"  class="btn btn-primary" ng-click="clearCart()">Очистить корзину</button>
+    <button ng-show="OnlineShopUserCart.items.length > 0"  class="btn btn-success" ng-click="goToOrderSubmit()">Перейти к оформлению заказа</button>
+</div>
+
