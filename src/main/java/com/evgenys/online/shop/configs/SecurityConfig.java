@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                //.antMatchers("/api/v1/**").authenticated()
                 .antMatchers("/api/v1/orders/**").authenticated()
                 .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .antMatchers("/h2-console/**").permitAll()
@@ -39,6 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .headers().frameOptions().disable();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        //UsernamePasswordAuthenticationFilter - достает из запроса логин пароль пакует все в токен и отправляет на аутентификацию
+        //Работать не будет потому что мы наш фильтр ставим в цепочку на шаг раньше и уже пользователь будет проверен и лежать в контексте
     }
 
     @Bean

@@ -18,4 +18,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     //@Query("select new com.evgenys.online.shop.dto.UserDto(u) from User u")
     //@Query("select u.username as username, u.password as password from User u where username = :usernameReg and password = :passwordReg")
 
+
 }
