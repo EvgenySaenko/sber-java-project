@@ -1,11 +1,9 @@
 ## Интернет магазин
+#### ️✔️интегрирован при помощи RabbitMQ с сервисом доставки Delivery Service    
+<a href="https://github.com/EvgenySaenko/delivery-service" target="_blank">
+  <img src="https://img.shields.io/badge/DeliveryService-FF3300" height="25" alt="Delivery Service" />
+</a>
 
----
- ️✔️интегрирован при помощи RabbitMQ с сервисом доставки Delivery Service\
- 🚩 Ссылка на репозиторий в GitHub   
- <a href="https://github.com/EvgenySaenko/delivery-service" target="_blank">
-    <img src="https://img.shields.io/badge/DeliveryService-FF3300" height="25" alt="Delivery Service" />
- </a>
 ---
 
 ### 🛠️ Стек технологий:
