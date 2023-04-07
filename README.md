@@ -50,7 +50,7 @@ __BACKEND:__
 
 ---
 
-
+<img src="https://img.shields.io/badge/DeliveryService-FF3300" height="25" alt="Delivery Service" />
 
 
 
