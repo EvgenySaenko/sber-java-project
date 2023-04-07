@@ -62,8 +62,10 @@ public class CartService {
     public UUID getCartForUser(String username, UUID cartId) {
         if (username != null && cartId != null) {//если пользователь и корзина есть
             User user = userService.findByUsername(username).get();
+
+
             Cart cart = findById(cartId).get();
-            Optional<Cart> oldCart =  findByUserId(user.getId());//ищме старую корзину
+            Optional<Cart> oldCart =  findByUserId(user.getId());//ищем старую корзину
             if (oldCart.isPresent()) {//если старая существует
                 cart.merge(oldCart.get());//смерджили новую со старой
                 cartRepository.delete(oldCart.get());//удалили старую
