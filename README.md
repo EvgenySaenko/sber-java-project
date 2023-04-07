@@ -1,5 +1,6 @@
 ## Интернет магазин
 
+---
  ️✔️интегрирован при помощи RabbitMQ с сервисом доставки Delivery Service\
  🚩 Ссылка на репозиторий в GitHub   
  <a href="https://github.com/EvgenySaenko/delivery-service" target="_blank">
