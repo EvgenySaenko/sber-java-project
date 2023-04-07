@@ -48,11 +48,22 @@ __BACKEND:__
 - ️️✔️ отправка данных о заказе в сервис доставки через RabbitMQ
 - ️️✔️ и многое другое.
 
+
+🚀 __Изображения:__
+
 ---
 
-<img src="https://img.shields.io/badge/DeliveryService-FF3300" height="25" alt="Delivery Service" />
+<img src="https://github.com/EvgenySaenko/sber-java-project/blob/part9/src/main/resources/assets/catalog.jpg" alt="Страница Каталога" />
 
+---
 
+<img src="https://github.com/EvgenySaenko/sber-java-project/blob/part9/src/main/resources/assets/admin.jpg" alt="Страница админа" />
+
+---
+
+<img src="https://github.com/EvgenySaenko/sber-java-project/blob/part9/src/main/resources/assets/cart.jpg" alt="Страница админа" />
+
+---
 
 
 
